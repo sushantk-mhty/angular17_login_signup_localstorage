@@ -2,6 +2,7 @@ import { Component, inject } from '@angular/core';
 import { SignUp } from '../../models/classes/sign-up.model';
 import { Login } from '../../models/classes/login.model';
 import { Router } from '@angular/router';
+import { UserService } from '../../services/user.service';
 
 @Component({
   selector: 'app-login',
@@ -15,10 +16,11 @@ export class LoginComponent {
   loginObj: Login = new Login();
 
   private router: Router = inject(Router);
+  private userService: UserService = inject(UserService);
 
   onRegister() {
     debugger
-    if (this.signUpObj.email == '' && this.signUpObj.password == '') {
+    if (this.signUpObj.EmailId == '' && this.signUpObj.Password == '') {
       alert('Text should not be empty');
     } else{
       const localUser = localStorage.getItem('angular17users');
@@ -37,8 +39,8 @@ export class LoginComponent {
   }
   clearTempForm() {
     this.signUpObj.name = '';
-    this.signUpObj.email = '';
-    this.signUpObj.password = '';
+    this.signUpObj.EmailId = '';
+    this.signUpObj.Password = '';
   }
   onLogin() {
     debugger
@@ -47,8 +49,8 @@ export class LoginComponent {
       const users = JSON.parse(localUsers); // convert to Array format
       const isUserPresent = users.find(
         (user: SignUp) =>
-          user.email == this.loginObj.email &&
-          user.password == this.loginObj.password
+          user.EmailId == this.loginObj.EmailId &&
+          user.Password == this.loginObj.Password
       );
       if (isUserPresent != undefined) {
         alert('User Found...');
@@ -61,4 +63,18 @@ export class LoginComponent {
       alert('Please sign up');
     }
   }
+  // onLogin(){
+  //   debugger;
+  //   this.userService.onlogin(this.loginObj).subscribe((res:any)=>{
+  //     debugger;
+  //     if(res.result){
+  //       localStorage.setItem('angular17tokenData',JSON.stringify(res.data));
+  //       this.router.navigateByUrl('/dashboard');
+  //     }else{
+  //       alert(res.message);
+  //     }
+  //   },error=>{
+  //     alert('wrong credential');
+  //   })
+  // }
 }
